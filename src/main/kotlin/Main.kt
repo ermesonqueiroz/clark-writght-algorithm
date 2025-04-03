@@ -1,28 +1,28 @@
-package org.example
-
-import ClarkWrightAlgorithm
-import domain.Customer
-import domain.Route
-import factories.CustomerFactory
-import utils.FileUtils
+import com.sun.net.httpserver.HttpServer
+import java.io.OutputStream
+import java.net.InetSocketAddress
 
 fun main() {
-    val customers: MutableList<Customer> = ArrayList()
+    val strategy = ClarkWrightAlgorithm()
+    val service = RoutingService(strategy)
+    val server = HttpServer.create(InetSocketAddress(8080), 0)
+    server.createContext("/solve") { exchange ->
+        println("Received request: ${exchange.requestMethod} ${exchange.requestURI}")
+        if (exchange.requestMethod == "POST") {
+            val requestBody = exchange.requestBody.reader().readText()
+            val customers = parseCustomers(requestBody)
+            val routes = service.calculateRoutes(customers)
+            val response = formatRoutes(routes)
 
-    for (row in FileUtils.readCSV("customers.csv")) {
-        customers.add(CustomerFactory.fromCsvRow(row))
-    }
-
-    val algorithm = ClarkWrightAlgorithm()
-
-    val routes: List<Route> = algorithm.solve(customers)
-
-    for (i in routes.indices) {
-        val route = routes[i]
-        println("Rota $i:")
-        for (customer in route.customers) {
-            println(customer.id.toString() + " " + customer.position)
+            exchange.sendResponseHeaders(200, response.toByteArray().size.toLong())
+            exchange.responseBody.use { os -> os.write(response.toByteArray()) }
+        } else {
+            exchange.sendResponseHeaders(405, -1)
         }
-        println()
+        exchange.close()
     }
+
+    server.executor = null // Uses default executor
+    server.start()
+    println("Server started on port 8080...")
 }

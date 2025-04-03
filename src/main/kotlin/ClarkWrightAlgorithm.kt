@@ -2,25 +2,12 @@ import domain.Customer
 import domain.Node
 import domain.Route
 
-class ClarkWrightAlgorithm {
+class ClarkWrightAlgorithm: RoutingStrategy {
     private fun findRouteByCustomer(routes: List<Route>, customer: Customer): Route? {
-        var route: Route? = null
-
-        var i = 0
-        while (route == null && i < routes.size) {
-            for (routeCustomer in routes[i].customers) {
-                if (customer.id == routeCustomer.id) {
-                    route = routes[i]
-                    break
-                }
-            }
-            i++
-        }
-
-        return route
+        return routes.find { it.containsCustomer(customer) }
     }
 
-    fun solve(customers: List<Customer>): List<Route> {
+    override fun solve(customers: List<Customer>): List<Route> {
         val nodes: MutableList<Node> = ArrayList()
 
         for (i in 1..<customers.size) {
