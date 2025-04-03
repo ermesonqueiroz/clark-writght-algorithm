@@ -1,6 +1,6 @@
 package org.example
 
-import ClarkWrightAlgorithm
+import strategies.ClarkWrightAlgorithm
 import domain.Customer
 import domain.Position
 import domain.Route

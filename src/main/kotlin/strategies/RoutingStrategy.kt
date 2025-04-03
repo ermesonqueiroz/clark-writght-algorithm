@@ -1,3 +1,5 @@
+package strategies
+
 import domain.Customer
 import domain.Route
 

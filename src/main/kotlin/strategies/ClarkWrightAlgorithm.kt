@@ -1,3 +1,6 @@
+package strategies
+
+import SortBySaving
 import domain.Customer
 import domain.Node
 import domain.Route
@@ -21,7 +24,7 @@ class ClarkWrightAlgorithm: RoutingStrategy {
                 nodes.add(newNode)
             }
         }
-
+        println(nodes.size)
         nodes.sortWith(SortBySaving())
 
         val routes: MutableList<Route> = ArrayList()
