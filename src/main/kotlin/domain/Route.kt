@@ -1,0 +1,15 @@
+package domain
+
+import java.util.LinkedList
+
+class Route {
+    val customers = LinkedList<Customer>()
+
+    fun add(customer: Customer) {
+        customers.add(customer)
+    }
+
+    fun getCustomers(): List<Customer> {
+        return customers
+    }
+}
