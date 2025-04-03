@@ -10,6 +10,6 @@ class RoutingService(private var strategy: RoutingStrategy) {
         if (customers.isEmpty()) {
             throw IllegalArgumentException("Customer list cannot be empty")
         }
-        return strategy.solve(customers);
+        return strategy.solve(customers)
     }
 }
