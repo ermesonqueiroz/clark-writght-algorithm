@@ -1,28 +1,18 @@
-package org.example
-
-import ClarkWrightAlgorithm
-import domain.Customer
-import domain.Route
-import factories.CustomerFactory
-import utils.FileUtils
+import com.sun.net.httpserver.HttpServer
+import controller.SolveController
+import factories.RoutingStrategyFactory
+import services.RoutingService
+import java.net.InetSocketAddress
 
 fun main() {
-    val customers: MutableList<Customer> = ArrayList()
+    val strategy = RoutingStrategyFactory.create("clarkwright")
+    val routingService = RoutingService(strategy)
+    val solveController = SolveController(routingService)
 
-    for (row in FileUtils.readCSV("customers.csv")) {
-        customers.add(CustomerFactory.fromCsvRow(row))
-    }
+    val server = HttpServer.create(InetSocketAddress(8080), 0)
+    server.createContext("/solve") { exchange -> solveController.handleSolveRequest(exchange) }
 
-    val algorithm = ClarkWrightAlgorithm()
-
-    val routes: List<Route> = algorithm.solve(customers)
-
-    for (i in routes.indices) {
-        val route = routes[i]
-        println("Rota $i:")
-        for (customer in route.customers) {
-            println(customer.id.toString() + " " + customer.position)
-        }
-        println()
-    }
+    server.executor = null
+    server.start()
+    println("Server started on port 8080...")
 }

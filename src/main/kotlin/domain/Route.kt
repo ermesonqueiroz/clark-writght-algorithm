@@ -12,4 +12,9 @@ class Route {
     fun getCustomers(): List<Customer> {
         return customers
     }
+
+    fun containsCustomer(customer: Customer): Boolean {
+        return customers.any { it.id == customer.id }
+    }
+
 }
