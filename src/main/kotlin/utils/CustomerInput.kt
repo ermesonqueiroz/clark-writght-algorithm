@@ -1,6 +1,6 @@
-import domain.Customer
-import domain.Position
-import domain.Route
+import domain.entities.Customer
+import domain.entities.Position
+import domain.entities.Route
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 

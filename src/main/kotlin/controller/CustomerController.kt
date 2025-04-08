@@ -1,12 +1,17 @@
 package controllers
 
+import application.Registry
 import com.sun.net.httpserver.HttpExchange
-import domain.Customer
+import com.sun.net.httpserver.HttpHandler
+import domain.entities.Customer
 import services.CustomerService
 import utils.JsonUtil
 
-class CustomerController(private val customerService: CustomerService) {
-    fun handle(exchange: HttpExchange) {
+class CustomerController:HttpHandler {
+    var registry = Registry.getInstance()
+    var customerService = registry.inject("customerService") as CustomerService
+
+    override fun handle(exchange: HttpExchange) {
         try {
         when (exchange.requestMethod) {
             "GET" -> handleGetAll(exchange)

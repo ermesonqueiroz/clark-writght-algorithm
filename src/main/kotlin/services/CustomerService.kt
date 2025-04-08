@@ -1,7 +1,7 @@
 package services
 
-import domain.Customer
-import domain.Position
+import domain.entities.Customer
+import domain.entities.Position
 import repositories.CustomerRepository
 
 class CustomerService(

@@ -1,10 +1,10 @@
 package repositories
 
-import domain.Distributor
+import domain.entities.Distributor
 
 class DistributorRepository {
-    private var distributor: Distributor ?= null
-    fun save(distributor: Distributor) :Distributor {
+    private var distributor: Distributor?= null
+    fun save(distributor: Distributor) : Distributor {
         this.distributor = distributor
         return distributor
     }

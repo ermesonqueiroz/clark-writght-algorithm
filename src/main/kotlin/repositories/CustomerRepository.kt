@@ -1,6 +1,6 @@
 package repositories
 
-import domain.Customer
+import domain.entities.Customer
 
 class CustomerRepository {
     private val customers = mutableListOf<Customer>()
