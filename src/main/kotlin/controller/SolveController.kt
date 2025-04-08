@@ -1,16 +1,15 @@
 package controller
 
-import application.Registry
 import services.RoutingService
 import com.sun.net.httpserver.HttpExchange
-import com.sun.net.httpserver.HttpHandler
-import formatRoutes
-import utils.RequestParser
+import domain.Route
+import services.CustomerService
+import utils.JsonUtil
 
-class SolveController : HttpHandler {
-    private val routingService = Registry.getInstance().inject("routingService") as RoutingService;
+class SolveController(private val routingService: RoutingService, private val customerService: CustomerService) {
 
-    override fun handle(exchange: HttpExchange) {
+
+    fun handleSolveRequest(exchange: HttpExchange) {
         if (exchange.requestMethod != "POST") {
             exchange.sendResponseHeaders(405, -1)
             exchange.close()
@@ -18,11 +17,12 @@ class SolveController : HttpHandler {
         }
 
         try {
-            val (customers, strategyName) = RequestParser.parseSolveRequest(exchange)
-
+            val body = exchange.requestBody.reader().readText()
+            val strategyName = JsonUtil.fromJson<String>(body)
+            val customers = customerService.getAll()
             routingService.setStrategy(strategyName)
             val resultRoutes = routingService.calculateRoutes(customers)
-            val response = formatRoutes(resultRoutes)
+            val response = JsonUtil.toJson<List<Route>>(resultRoutes)
 
             exchange.sendResponseHeaders(200, response.toByteArray().size.toLong())
             exchange.responseBody.use { os -> os.write(response.toByteArray()) }
