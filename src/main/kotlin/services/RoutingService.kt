@@ -1,8 +1,8 @@
 package services
 
 import strategies.RoutingStrategy
-import domain.Customer
-import domain.Route
+import domain.entities.Customer
+import domain.entities.Route
 import factories.RoutingStrategyFactory
 
 class RoutingService(private var strategy: RoutingStrategy) {

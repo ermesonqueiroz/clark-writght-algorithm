@@ -1,9 +1,9 @@
 package org.example
 
 import strategies.ClarkWrightAlgorithm
-import domain.Customer
-import domain.Position
-import domain.Route
+import domain.entities.Customer
+import domain.entities.Position
+import domain.entities.Route
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

@@ -3,7 +3,7 @@ package utils
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import domain.Customer
+import domain.entities.Customer
 import com.sun.net.httpserver.HttpExchange
 import parseCustomers
 

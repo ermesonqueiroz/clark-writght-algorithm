@@ -1,7 +1,7 @@
 package factories
 
-import domain.Customer
-import domain.Position
+import domain.entities.Customer
+import domain.entities.Position
 
 object CustomerFactory {
     fun fromCsvRow(row: List<String>): Customer {

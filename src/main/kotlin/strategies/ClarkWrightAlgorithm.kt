@@ -1,9 +1,9 @@
 package strategies
 
 import SortBySaving
-import domain.Customer
-import domain.Node
-import domain.Route
+import domain.entities.Customer
+import domain.entities.Node
+import domain.entities.Route
 
 class ClarkWrightAlgorithm: RoutingStrategy {
     private fun findRouteByCustomer(routes: List<Route>, customer: Customer): Route? {

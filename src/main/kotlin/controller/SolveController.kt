@@ -1,13 +1,16 @@
 package controller
 
+import application.Registry
 import services.RoutingService
 import com.sun.net.httpserver.HttpExchange
+import com.sun.net.httpserver.HttpHandler
 import formatRoutes
 import utils.RequestParser
 
-class SolveController(private val routingService: RoutingService) {
+class SolveController : HttpHandler {
+    private val routingService = Registry.getInstance().inject("routingService") as RoutingService;
 
-    fun handleSolveRequest(exchange: HttpExchange) {
+    override fun handle(exchange: HttpExchange) {
         if (exchange.requestMethod != "POST") {
             exchange.sendResponseHeaders(405, -1)
             exchange.close()
