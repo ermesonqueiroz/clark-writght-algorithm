@@ -1,13 +1,27 @@
 package repositories
 
 import domain.entities.Customer
+import domain.entities.Position
 
 class CustomerRepository {
     private val customers = mutableListOf<Customer>()
+    private var currentId = 1
+    companion object {
+        private var instance: CustomerRepository ? = null
+        fun getInstance(): CustomerRepository {
+            if (instance == null) {
+                instance = CustomerRepository()
+            }
 
-    fun save(customer: Customer): Customer {
-        customers.add(customer)
-        return customer
+            return instance!!
+        }
+    }
+
+    //esse position supostamente era pra ser um DTO, mas ta bom ja rs
+    fun save(position: Position): Customer {
+        val customerWithId = Customer(id = currentId++,position)
+        customers.add(customerWithId)
+        return customerWithId
     }
 
     fun findAll(): List<Customer> {
