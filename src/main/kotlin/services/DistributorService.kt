@@ -5,7 +5,7 @@ import domain.entities.Distributor
 import repositories.CustomerRepository
 import repositories.DistributorRepository
 
-class DistributorService( private val repository: DistributorRepository = DistributorRepository()) {
+class DistributorService( private val repository: DistributorRepository = DistributorRepository.getInstance()) {
 
     fun create(distributor: Distributor): Distributor {
         return repository.save(distributor)
