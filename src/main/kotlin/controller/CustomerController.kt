@@ -4,6 +4,7 @@ import application.Registry
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import domain.entities.Customer
+import domain.entities.Position
 import services.CustomerService
 import utils.JsonUtil
 
@@ -35,8 +36,8 @@ class CustomerController:HttpHandler {
 
     private fun handleCreate(exchange: HttpExchange) {
         val body = exchange.requestBody.reader().readText()
-        val customer = JsonUtil.fromJson<Customer>(body)
-        customerService.create(customer)
+        val position = JsonUtil.fromJson<Position>(body)
+        customerService.create(position)
         respond(exchange, 201, "Customer created")
     }
 
