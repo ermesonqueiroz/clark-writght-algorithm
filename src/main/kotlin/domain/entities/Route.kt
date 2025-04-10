@@ -20,5 +20,4 @@ class Route {
     fun containsCustomer(customer: Customer): Boolean {
         return customers.any { it.id == customer.id }
     }
-
 }

@@ -1,11 +1,11 @@
 package services
 
-import com.sun.net.httpserver.HttpHandler
+import application.Registry
+import application.repository.DistributorRepository
 import domain.entities.Distributor
-import repositories.CustomerRepository
-import repositories.DistributorRepository
 
-class DistributorService( private val repository: DistributorRepository = DistributorRepository.getInstance()) {
+class DistributorService {
+    private val repository = Registry.getInstance().inject("distributorRepository") as DistributorRepository
 
     fun create(distributor: Distributor): Distributor {
         return repository.save(distributor)
@@ -14,6 +14,4 @@ class DistributorService( private val repository: DistributorRepository = Distri
     fun get(): Distributor {
         return repository.find()
     }
-
-
 }

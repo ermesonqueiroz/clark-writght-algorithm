@@ -1,31 +1,36 @@
+import adapters.presentation.controller.CreateCustomerController
 import application.Registry
+import application.repository.DistributorRepository
+import application.usecase.CreateCustomerUseCase
 import com.sun.net.httpserver.HttpServer
-import controller.SolveController
+import controllers.SolveController
 import controllers.CustomerController
 import controllers.DistributorController
 import factories.RoutingStrategyFactory
+import infra.repository.CustomerRepositoryFake
+import infra.repository.DistributorRepositoryFake
 import services.CustomerService
 import services.DistributorService
 import services.RoutingService
 import java.net.InetSocketAddress
 
-fun main() {
-    val routingService = RoutingService(RoutingStrategyFactory.create("clarkwright"))
-    val customerService = CustomerService()
-    val distributorService = DistributorService()
+fun registerDependencies() {
     val registry = Registry.getInstance()
-    registry.provide("routingService", routingService)
-    registry.provide("customerService", customerService)
-    registry.provide("distributorService", distributorService)
+    registry.provide("distributorRepository", DistributorRepositoryFake())
+    registry.provide("customerRepository", CustomerRepositoryFake())
+    registry.provide("distributorService", DistributorService())
+    registry.provide("customerService", CustomerService())
+    registry.provide("routingService", RoutingService(RoutingStrategyFactory.create("clarkwright")))
+}
 
-    val solveController = SolveController()
-    val customerController = CustomerController()
-    val distributorController = DistributorController()
+fun main() {
+    registerDependencies()
 
     val server = HttpServer.create(InetSocketAddress(8080), 0)
-    server.createContext("/solve", solveController)
-    server.createContext("/customers", customerController)
-    server.createContext("/distributors", distributorController)
+    server.createContext("/solve", SolveController())
+//    server.createContext("/customers", CustomerController())
+    server.createContext("/distributors", DistributorController())
+    server.createContext("/customers", HttpControllerAdapter(CreateCustomerController(CreateCustomerUseCase())))
 
     server.executor = null
     server.start()
