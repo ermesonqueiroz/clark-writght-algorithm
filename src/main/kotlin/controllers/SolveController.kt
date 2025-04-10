@@ -1,4 +1,4 @@
-package controller
+package controllers
 
 import StrategyRequest
 import application.Registry
@@ -21,6 +21,7 @@ class SolveController:HttpHandler {
             val customers = customerService.getAll()
             routingService.setStrategy(strategyName)
             val resultRoutes = routingService.calculateRoutes(customers)
+            println(resultRoutes[0].toString())
             val response = JsonUtil.toJson<List<Route>>(resultRoutes)
 
             respond(exchange,200,response)
